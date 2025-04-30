@@ -1,32 +1,33 @@
 import pygame
 import numpy as np
+from face import *
 
 class Cuboid:
     def __init__(self, vertices, dims, color=(0, 0, 0)):
         if len(vertices) == 8 and dims is None:
             self.vertices = vertices
         elif len(dims) == 3 and len(vertices) == 1: #then compute all vertices
-            #starting vertex
-            x, y, z = vertices[0]
+            #starting vertex: left, highest, deepest
+            x, y, z = vertices[0] #id=0
             a = dims[0] #length
             b = dims[1] #height
             c = dims[2] #depth
             #finish top base
-            vertices.append([x, y, z + c])
-            vertices.append([x + a, y, z + c])
-            vertices.append([x + a, y, z])
-            #bottom base
-            vertices.append([x, y + b, z])
-            vertices.append([x, y + b, z + c])
-            vertices.append([x + a, y + b, z + c])
-            vertices.append([x + a, y + b, z])
+            vertices.append([x + a, y, z]) #id=1
+            vertices.append([x + a, y, z + c]) #id=2
+            vertices.append([x, y, z + c]) #id=3
 
+            #bottom base:
+            vertices.append([x, y - b, z]) #id=4
+            vertices.append([x, y - b, z + c]) #id=5
+            vertices.append([x + a, y - b, z + c]) #id=6
+            vertices.append([x + a, y - b, z]) #id=7
             [vertex.append(1) for vertex in vertices]
             self.vertices = vertices
-            print(self.vertices)
-        self.edges = [(0, 1), (1, 2), (2, 3), (3, 0),
-                      (4, 5), (5, 6), (6, 7), (7, 4),
-                      (0, 4), (1, 5), (2, 6), (3, 7)]
+
+        #initialize 6 faces, each using 4 vertices numbered clockwise (CW) considering they are FRONT
+        self.faces_vertices_idx = [(0, 1, 2, 3), (4, 5, 6, 7), (3, 2, 6, 5), (2, 1, 7, 6), (1, 0, 4, 7), (0, 3, 5, 4)]
+        self.faces = [Face(vertices, idx) for idx in self.faces_vertices_idx]
         self.color = color
 
     def project(self, dist, w, h):
@@ -42,6 +43,7 @@ class Cuboid:
         self.projected = projected
 
     def draw(self, window, dist, w, h, linewidth=5):
-        for edge in self.edges:
-            self.project(dist, w, h)
-            pygame.draw.line(window, self.color, self.projected[edge[0]], self.projected[edge[1]], linewidth)
+        self.project(dist, w, h)
+        for idx in self.faces_vertices_idx:
+            # pygame.draw.line(window, self.color, self.projected[edge[0]], self.projected[edge[1]], linewidth)
+            pygame.draw.polygon(window, self.color, [self.projected[idx[0]], self.projected[idx[1]], self.projected[idx[2]], self.projected[idx[3]]])
