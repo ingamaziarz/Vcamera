@@ -2,13 +2,14 @@ import numpy as np
 step_len = 10
 step_rad = 0.02 #step in radians
 
-def trans(cuboids, dim, dir):
+def trans(cuboids, dim, dir, camera_position):
     trans_matrix = np.eye(4)
     trans_matrix[dim][3] = dir * step_len
     for cuboid in cuboids:
         cuboid.vertices = [trans_matrix @ vertex for vertex in cuboid.vertices]
+    camera_position[:] = np.linalg.inv(trans_matrix) @ camera_position
 
-def rot(cuboids, dim, dir):
+def rot(cuboids, dim, dir, camera_position):
     rot_matrix = np.eye(4)
     a = step_rad * dir
     if dim == "x":
@@ -21,3 +22,4 @@ def rot(cuboids, dim, dir):
 
     for cuboid in cuboids:
         cuboid.vertices = [rot_matrix @ vertex for vertex in cuboid.vertices]
+    camera_position[:] = np.linalg.inv(rot_matrix) @ camera_position

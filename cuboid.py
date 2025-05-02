@@ -27,7 +27,7 @@ class Cuboid:
 
         #initialize 6 faces, each using 4 vertices numbered clockwise (CW) considering they are FRONT
         self.faces_vertices_idx = [(0, 1, 2, 3), (4, 5, 6, 7), (3, 2, 6, 5), (2, 1, 7, 6), (1, 0, 4, 7), (0, 3, 5, 4)]
-        self.faces = [Face(vertices, idx) for idx in self.faces_vertices_idx]
+        self.faces = [Face(vertices, idx, color) for idx in self.faces_vertices_idx]
         self.color = color
 
     def project(self, dist, w, h):
@@ -40,10 +40,8 @@ class Cuboid:
             result = (projection_matrix @ vertex) * dist / (z + dist)
             projected.append([result[0] + w / 2, result[1] + h / 2])
 
-        self.projected = projected
+        for i, face in enumerate(self.faces):
+            idx = self.faces_vertices_idx[i]
+            face.projected = [projected[id] for id in idx]
 
-    def draw(self, window, dist, w, h, linewidth=5):
-        self.project(dist, w, h)
-        for idx in self.faces_vertices_idx:
-            # pygame.draw.line(window, self.color, self.projected[edge[0]], self.projected[edge[1]], linewidth)
-            pygame.draw.polygon(window, self.color, [self.projected[idx[0]], self.projected[idx[1]], self.projected[idx[2]], self.projected[idx[3]]])
+        self.projected = projected
