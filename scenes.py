@@ -17,11 +17,11 @@ def create_scene(option):
             return cuboids
 
         case "street":
-            block1 = Cuboid(vertices=[[-100, 0, 50]], dims=(50, 200, 50), color=(100, 100, 100))
-            block2 = Cuboid(vertices=[[-100, 0, 150]], dims=(60, 200, 50), color=(150, 150, 150))
-            block3 = Cuboid(vertices=[[-100, 0, 250]], dims=(50, 200, 60), color=(200, 200, 200))
-            block4 = Cuboid(vertices=[[100, 0, 100]], dims=(70, 150, 100), color=(0, 0, 0))
-            grass = Cuboid(vertices=[[-120, 20, 0]], dims=(270, 15, 350), color=(20, 200, 20))
+            block1 = Cuboid(vertices=[[-100, 0, 50]], dims=(50, -200, 50), color=(100, 100, 100))
+            block2 = Cuboid(vertices=[[-100, 0, 150]], dims=(60, -150, 50), color=(150, 150, 150))
+            block3 = Cuboid(vertices=[[-100, 0, 250]], dims=(50, -300, 60), color=(200, 200, 200))
+            block4 = Cuboid(vertices=[[100, 0, 100]], dims=(70, -150, 100), color=(0, 0, 0))
+            grass = Cuboid(vertices=[[-120, -20, 0]], dims=(300, -15, 350), color=(20, 200, 20))
 
             cuboids.append(block1)
             cuboids.append(block2)

@@ -7,6 +7,3 @@ class Face:
         self.color = color
         self.center = np.mean(self.vertices, axis=0)
         print("SELF CENTER: ", self.center)
-
-
-
