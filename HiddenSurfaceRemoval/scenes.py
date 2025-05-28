@@ -36,9 +36,9 @@ def create_scene(option):
 
             start_x, start_y, start_z = -50, 0, -50
 
-            for i in range(3):  # oś X
-                for j in range(3):  # oś Y (wysokość)
-                    for k in range(3):  # oś Z (głębokość)
+            for i in range(3):
+                for j in range(3):
+                    for k in range(3):
                         x = start_x + i * (block_size[0] + gap)
                         y = start_y + j * (block_size[1] - gap)
                         z = start_z + k * (block_size[2] + gap)
