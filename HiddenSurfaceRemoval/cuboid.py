@@ -20,24 +20,10 @@ class Cuboid:
             vertices.append([x, y - b, z + c])  #id=5
             vertices.append([x + a, y - b, z + c])  #id=6
             vertices.append([x + a, y - b, z])  #id=7
+
             self.vertices = vertices
 
         #initialize 6 faces, each using 4 vertices numbered clockwise (CW) considering they are FRONT
         self.faces_vertices_idx = [(0, 1, 2, 3), (4, 5, 6, 7), (3, 2, 6, 5), (2, 1, 7, 6), (1, 0, 4, 7), (0, 3, 5, 4)]
-        self.faces = [Face(vertices, idx, color) for idx in self.faces_vertices_idx]
+        self.faces = [Face(vertices=None, all_vertices=vertices, normal=None, idx=idx, color=color) for idx in self.faces_vertices_idx]
         self.color = color
-
-    def project(self, projection_matrix, dist, w, h):
-        for face in self.faces:
-            projected = []
-            for vertex in face.vertices:
-                vertex_extended = np.append(vertex, 1)
-                cam_coords = projection_matrix @ vertex_extended
-                z = cam_coords[2]
-                f = 0 if not z else dist / z
-
-                x = cam_coords[0] * f + w / 2
-                y = -cam_coords[1] * f + h / 2
-
-                projected.append((x, y))
-            face.projected = projected
